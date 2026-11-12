@@ -11,6 +11,9 @@ import {
   Linkedin,
   LoaderCircle,
   Menu,
+  Pause,
+  Play,
+  RotateCcw,
   Send,
   X,
   Youtube,
@@ -38,6 +41,248 @@ const pathSlashTitle = 'M 256 12 L 244 100';
 
 const valImg = '/assets/Valentina-BIrzog3g.webp';
 const gabImg = '/assets/Gabriele-dC9VqZ5B.PNG';
+
+function BreathingSection() {
+  const [isRunning, setIsRunning] = useState(true);
+  const [time, setTime] = useState(0); // in seconds, 0 to 10
+  const [cycles, setCycles] = useState(0);
+
+  useEffect(() => {
+    if (!isRunning) return;
+    const intervalMs = 50;
+    const interval = setInterval(() => {
+      setTime((prev) => {
+        const next = prev + intervalMs / 1000;
+        if (next >= 10) {
+          setCycles((c) => c + 1);
+          return 0;
+        }
+        return next;
+      });
+    }, intervalMs);
+
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+  const isInhale = time < 4;
+  const phaseLabel = isInhale ? 'Inspira' : 'Espira';
+  const secondsLeft = isInhale ? Math.ceil(4 - time) : Math.ceil(10 - time);
+
+  // Cosine easing for smooth organic expansion and contraction
+  // 0 to 4s: scale 0.68 to 1.18
+  // 4 to 10s: scale 1.18 down to 0.68
+  let scale = 0.68;
+  if (isInhale) {
+    const p = time / 4;
+    scale = 0.68 + 0.5 * (0.5 - 0.5 * Math.cos(Math.PI * p));
+  } else {
+    const p = (time - 4) / 6;
+    scale = 1.18 - 0.5 * (0.5 - 0.5 * Math.cos(Math.PI * p));
+  }
+
+  // 10-second total cycle progress (0% to 100%)
+  const totalProgress = (time / 10) * 100;
+  const circumference = 2 * Math.PI * 140; // ~879.64
+
+  const handleReset = () => {
+    setTime(0);
+    setCycles(0);
+  };
+
+  return (
+    <section
+      id="provalo-adesso"
+      className="py-20 md:py-28 px-5 sm:px-8 relative overflow-hidden"
+    >
+      <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
+        {/* Title */}
+        <div className="mb-8 max-w-2xl">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white mb-3 font-title">
+            Provalo adesso
+          </h2>
+          <p className="text-base sm:text-lg text-white/80 font-normal">
+            4 secondi inspiro · 6 secondi espiro
+          </p>
+          <p className="text-xs sm:text-sm text-white/50 mt-2 max-w-xl mx-auto leading-relaxed">
+            Sincronizza il tuo respiro con la sfera in stile LO/OP.
+            L'espirazione prolungata attiva il nervo vago e invia al cervello il
+            segnale biologico per uscire dal pilota automatico.
+          </p>
+        </div>
+
+        {/* Breathing Sphere Stage */}
+        <div className="relative w-72 h-72 sm:w-80 sm:h-80 flex items-center justify-center my-6 select-none">
+          {/* Atmospheric background glow */}
+          <div
+            className="absolute inset-0 rounded-full bg-gradient-to-tr from-sky-400/15 via-white/10 to-transparent blur-3xl transition-opacity duration-500 pointer-events-none"
+            style={{
+              opacity: isInhale ? 0.85 : 0.4,
+              transform: `scale(${scale * 1.3})`,
+            }}
+          />
+
+          {/* SVG Orbit and Progress Rings */}
+          <svg
+            viewBox="0 0 320 320"
+            className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
+          >
+            {/* Outer static hairline ring */}
+            <circle
+              cx="160"
+              cy="160"
+              r="140"
+              fill="none"
+              stroke="rgba(255,255,255,0.08)"
+              strokeWidth="1"
+            />
+            {/* Dynamic progress ring */}
+            <circle
+              cx="160"
+              cy="160"
+              r="140"
+              fill="none"
+              stroke="rgba(255,255,255,0.4)"
+              strokeWidth="1.5"
+              strokeDasharray={circumference}
+              strokeDashoffset={
+                circumference - (circumference * totalProgress) / 100
+              }
+              strokeLinecap="round"
+              transform="rotate(-90 160 160)"
+            />
+
+            {/* Orbiting dashed streams scaling with breath */}
+            <circle
+              cx="160"
+              cy="160"
+              r="112"
+              fill="none"
+              stroke="rgba(216,236,248,0.3)"
+              strokeWidth="1.2"
+              strokeDasharray="6 14"
+              className="spark-stream-b"
+              style={{
+                transformOrigin: '160px 160px',
+                transform: `scale(${scale})`,
+              }}
+            />
+            <circle
+              cx="160"
+              cy="160"
+              r="86"
+              fill="none"
+              stroke="rgba(255,255,255,0.25)"
+              strokeWidth="1"
+              strokeDasharray="4 12"
+              className="spark-stream-a"
+              style={{
+                transformOrigin: '160px 160px',
+                transform: `scale(${scale})`,
+              }}
+            />
+          </svg>
+
+          {/* Central Bioluminescent Breathing Sphere */}
+          <div
+            className="relative rounded-full flex flex-col items-center justify-center transition-transform duration-75 ease-out shadow-2xl"
+            style={{
+              width: '180px',
+              height: '180px',
+              transform: `scale(${scale})`,
+              background:
+                'radial-gradient(circle at 35% 32%, rgba(255, 255, 255, 0.95) 0%, rgba(216, 236, 248, 0.7) 26%, rgba(15, 23, 42, 0.9) 70%, rgba(5, 6, 8, 0.98) 100%)',
+              border: '1.5px solid rgba(255, 255, 255, 0.45)',
+              boxShadow: isInhale
+                ? '0 0 55px rgba(216, 236, 248, 0.55), inset 0 0 35px rgba(255, 255, 255, 0.4)'
+                : '0 0 25px rgba(216, 236, 248, 0.2), inset 0 0 20px rgba(255, 255, 255, 0.2)',
+            }}
+          >
+            {/* Specular line sheen sweep inside sphere */}
+            <div className="absolute inset-0 rounded-full overflow-hidden pointer-events-none opacity-40">
+              <div className="absolute inset-0 w-1/2 bg-gradient-to-r from-transparent via-white/50 to-transparent line-sheen-sweep" />
+            </div>
+
+            {/* Central Typography and Countdown */}
+            <div className="relative z-10 text-center flex flex-col items-center justify-center">
+              <span
+                className="font-title text-xl sm:text-2xl font-bold tracking-tight text-white drop-shadow-md select-none transition-all duration-300"
+                style={{ fontFamily: "'Comfortaa', sans-serif" }}
+              >
+                {phaseLabel}
+              </span>
+              <span className="font-mono text-sm sm:text-base font-semibold text-white/80 mt-1 tabular-nums">
+                {secondsLeft}s
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* Phase Pill Indicators */}
+        <div className="flex items-center gap-3 my-6 text-xs font-mono">
+          <div
+            className={`px-4 py-1.5 rounded-full border transition-all duration-300 ${
+              isInhale
+                ? 'bg-white/15 border-white text-white shadow-[0_0_15px_rgba(255,255,255,0.25)]'
+                : 'bg-transparent border-white/15 text-white/40'
+            }`}
+          >
+            Inspiro · 4s
+          </div>
+          <span className="text-white/20">·</span>
+          <div
+            className={`px-4 py-1.5 rounded-full border transition-all duration-300 ${
+              !isInhale
+                ? 'bg-white/15 border-white text-white shadow-[0_0_15px_rgba(255,255,255,0.25)]'
+                : 'bg-transparent border-white/15 text-white/40'
+            }`}
+          >
+            Espiro · 6s
+          </div>
+        </div>
+
+        {/* Controls and Cycle Counter */}
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => setIsRunning(!isRunning)}
+            className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-white/40 hover:border-white bg-[#0a0d12] hover:bg-white/10 text-xs text-white font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white cursor-pointer"
+            aria-label={
+              isRunning ? 'Metti in pausa il respiro' : 'Riprendi il respiro'
+            }
+          >
+            {isRunning ? (
+              <>
+                <Pause className="w-3.5 h-3.5" />
+                <span>Pausa</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-3.5 h-3.5" />
+                <span>Avvia</span>
+              </>
+            )}
+          </button>
+
+          <button
+            type="button"
+            onClick={handleReset}
+            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-white/20 hover:border-white/50 text-xs text-white/70 hover:text-white transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white cursor-pointer"
+            aria-label="Ricomincia il ciclo di respirazione"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>Reset</span>
+          </button>
+
+          {cycles > 0 && (
+            <span className="text-xs font-mono text-white/50 pl-2">
+              Cicli: {cycles}
+            </span>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
 
 export default function App() {
   const [arcActive, setArcActive] = useState(false);
@@ -191,6 +436,12 @@ export default function App() {
               Perché
             </a>
             <a
+              href="#provalo-adesso"
+              className="hover:text-white transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
+            >
+              Provalo
+            </a>
+            <a
               href="#chi-siamo"
               className="hover:text-white transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
             >
@@ -249,6 +500,13 @@ export default function App() {
               className="text-white/80 hover:text-white py-1"
             >
               Perché
+            </a>
+            <a
+              href="#provalo-adesso"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-white/80 hover:text-white py-1"
+            >
+              Provalo
             </a>
             <a
               href="#chi-siamo"
@@ -669,6 +927,19 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* Animated divider */}
+      <div className="relative w-full h-[1px] bg-white/10 overflow-hidden">
+        <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/35 to-transparent line-sheen-sweep" />
+      </div>
+
+      {/* Provalo adesso - Breathing Sphere Section */}
+      <BreathingSection />
+
+      {/* Animated divider */}
+      <div className="relative w-full h-[1px] bg-white/10 overflow-hidden">
+        <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/35 to-transparent line-sheen-sweep-delayed" />
+      </div>
 
       {/* Contrasting Highlight Ribbon */}
       <section className="w-full bg-[#d5d9df] text-[#090c10] py-12 sm:py-16 md:py-20 px-5 sm:px-8 relative z-10 shadow-lg border-y border-black/5">
