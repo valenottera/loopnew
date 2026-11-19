@@ -20,6 +20,7 @@ import {
   X,
   Youtube,
 } from 'lucide-react';
+import { LegalPage, type LegalRoute } from './LegalPages';
 
 const SPARK_CONFIG = {
   sparkColor: '#F0F6FC',
@@ -349,7 +350,58 @@ export default function App() {
   }>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [cookieModalOpen, setCookieModalOpen] = useState(false);
+
+  const normalizeRoute = (pathname: string): '/' | LegalRoute => {
+    const clean = pathname.replace(/\/+$/, '') || '/';
+    if (
+      clean === '/termini-e-condizioni' ||
+      clean === '/privacy-policy' ||
+      clean === '/cookie-policy'
+    ) {
+      return clean;
+    }
+    return '/';
+  };
+
+  const [currentRoute, setCurrentRoute] = useState<'/' | LegalRoute>(() =>
+    typeof window !== 'undefined'
+      ? normalizeRoute(window.location.pathname)
+      : '/'
+  );
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentRoute(normalizeRoute(window.location.pathname));
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigate = (target: string) => {
+    setMobileMenuOpen(false);
+    if (target.startsWith('#')) {
+      const id = target.slice(1);
+      if (currentRoute !== '/') {
+        window.history.pushState({}, '', `/${target}`);
+        setCurrentRoute('/');
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+          }, 40);
+        });
+      } else {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
+
+    const nextRoute = normalizeRoute(target);
+    if (window.location.pathname !== nextRoute) {
+      window.history.pushState({}, '', nextRoute);
+    }
+    setCurrentRoute(nextRoute);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const arcTimerRef = useRef<NodeJS.Timeout | null>(null);
   const arcTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -460,7 +512,11 @@ export default function App() {
       <header className="sticky top-0 z-50 bg-[#06080b]/85 backdrop-blur-md border-b border-white/10">
         <div className="max-w-6xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between gap-8">
           <a
-            href="#hero"
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/');
+            }}
             className="font-title text-sm tracking-wider font-bold text-white hover:text-white/80 transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
           >
             LO/OP
@@ -471,37 +527,61 @@ export default function App() {
             className="hidden md:flex items-center gap-6 lg:gap-8 text-xs tracking-wide text-white/70"
           >
             <a
-              href="#cose"
+              href="/#cose"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#cose');
+              }}
               className="hover:text-white transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
             >
               Cos'è
             </a>
             <a
-              href="#perche"
+              href="/#perche"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#perche');
+              }}
               className="hover:text-white transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
             >
               Perché
             </a>
             <a
-              href="#provalo-adesso"
+              href="/#provalo-adesso"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#provalo-adesso');
+              }}
               className="hover:text-white transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
             >
               Provalo
             </a>
             <a
-              href="#prossimi-loop"
+              href="/#prossimi-loop"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#prossimi-loop');
+              }}
               className="hover:text-white transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
             >
               Prossimi loop
             </a>
             <a
-              href="#chi-siamo"
+              href="/#chi-siamo"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#chi-siamo');
+              }}
               className="hover:text-white transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
             >
               Chi siamo
             </a>
             <a
-              href="#brochure"
+              href="/#brochure"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#brochure');
+              }}
               className="hover:text-white transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
             >
               Brochure
@@ -510,7 +590,11 @@ export default function App() {
 
           <div className="hidden md:flex items-center gap-4 shrink-0">
             <a
-              href="#contatti"
+              href="/#contatti"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#contatti');
+              }}
               className="text-xs font-medium px-5 py-2 rounded-full border border-white/70 text-white hover:bg-white hover:text-black transition-all whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white"
             >
               Contatti
@@ -541,50 +625,71 @@ export default function App() {
             className="md:hidden bg-[#07090d] border-b border-white/10 px-6 py-6 flex flex-col gap-4 text-sm tracking-wide"
           >
             <a
-              href="#cose"
-              onClick={() => setMobileMenuOpen(false)}
+              href="/#cose"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#cose');
+              }}
               className="text-white/80 hover:text-white py-1"
             >
               Cos'è
             </a>
             <a
-              href="#perche"
-              onClick={() => setMobileMenuOpen(false)}
+              href="/#perche"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#perche');
+              }}
               className="text-white/80 hover:text-white py-1"
             >
               Perché
             </a>
             <a
-              href="#provalo-adesso"
-              onClick={() => setMobileMenuOpen(false)}
+              href="/#provalo-adesso"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#provalo-adesso');
+              }}
               className="text-white/80 hover:text-white py-1"
             >
               Provalo
             </a>
             <a
-              href="#prossimi-loop"
-              onClick={() => setMobileMenuOpen(false)}
+              href="/#prossimi-loop"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#prossimi-loop');
+              }}
               className="text-white/80 hover:text-white py-1"
             >
               Prossimi loop
             </a>
             <a
-              href="#chi-siamo"
-              onClick={() => setMobileMenuOpen(false)}
+              href="/#chi-siamo"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#chi-siamo');
+              }}
               className="text-white/80 hover:text-white py-1"
             >
               Chi siamo
             </a>
             <a
-              href="#brochure"
-              onClick={() => setMobileMenuOpen(false)}
+              href="/#brochure"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#brochure');
+              }}
               className="text-white/80 hover:text-white py-1"
             >
               Brochure
             </a>
             <a
-              href="#contatti"
-              onClick={() => setMobileMenuOpen(false)}
+              href="/#contatti"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('#contatti');
+              }}
               className="inline-block text-center mt-2 px-6 py-3 rounded-full border border-white text-white hover:bg-white hover:text-black transition-all"
             >
               Scrivici
@@ -592,6 +697,11 @@ export default function App() {
           </nav>
         )}
       </header>
+
+      {currentRoute !== '/' ? (
+        <LegalPage route={currentRoute} onNavigate={navigate} />
+      ) : (
+        <>
 
       {/* Hero Section */}
       <section
@@ -1378,18 +1488,43 @@ export default function App() {
                   />
                   <span className="text-xs text-white/70 leading-relaxed group-hover:text-white/90 transition-colors">
                     Dichiaro di aver letto la{' '}
-                    <button
-                      type="button"
+                    <a
+                      href="/privacy-policy"
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
-                        setCookieModalOpen(true);
+                        navigate('/privacy-policy');
                       }}
                       className="underline underline-offset-2 hover:text-white"
                     >
-                      privacy e cookie policy
-                    </button>{' '}
+                      privacy policy
+                    </a>
+                    , la{' '}
+                    <a
+                      href="/cookie-policy"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        navigate('/cookie-policy');
+                      }}
+                      className="underline underline-offset-2 hover:text-white"
+                    >
+                      cookie policy
+                    </a>{' '}
+                    e i{' '}
+                    <a
+                      href="/termini-e-condizioni"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        navigate('/termini-e-condizioni');
+                      }}
+                      className="underline underline-offset-2 hover:text-white"
+                    >
+                      termini e condizioni
+                    </a>{' '}
                     e acconsento al trattamento dei dati personali per ricevere
-                    informazioni sul workshop LO/OP.
+                    informazioni sulle attività LO/OP.
                   </span>
                 </label>
                 {errors.privacy && (
@@ -1422,6 +1557,8 @@ export default function App() {
           )}
         </div>
       </section>
+        </>
+      )}
 
       {/* Footer */}
       <footer className="border-t border-white/10 bg-[#040608]/90 py-16 px-5 sm:px-8 mt-auto">
@@ -1481,74 +1618,47 @@ export default function App() {
               <span className="hidden sm:inline opacity-30">·</span>
               <span>Gabriele Papparella - P.IVA: 02982530301</span>
             </div>
-            <div>
-              <button
-                type="button"
-                onClick={() => setCookieModalOpen(true)}
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <a
+                href="/termini-e-condizioni"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate('/termini-e-condizioni');
+                }}
+                className="hover:text-white transition-colors underline underline-offset-2"
+              >
+                termini e condizioni
+              </a>
+              <span className="opacity-30" aria-hidden="true">
+                ·
+              </span>
+              <a
+                href="/privacy-policy"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate('/privacy-policy');
+                }}
+                className="hover:text-white transition-colors underline underline-offset-2"
+              >
+                privacy policy
+              </a>
+              <span className="opacity-30" aria-hidden="true">
+                ·
+              </span>
+              <a
+                href="/cookie-policy"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigate('/cookie-policy');
+                }}
                 className="hover:text-white transition-colors underline underline-offset-2"
               >
                 cookie policy
-              </button>
+              </a>
             </div>
           </div>
         </div>
       </footer>
-
-      {/* Cookie & Privacy Policy Modal */}
-      {cookieModalOpen && (
-        <div
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="cookie-modal-title"
-          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
-        >
-          <div className="bg-[#0b0e14] border border-white/20 rounded-2xl max-w-md w-full p-6 sm:p-8 space-y-4 shadow-2xl">
-            <div className="flex items-center justify-between border-b border-white/15 pb-3">
-              <h3
-                id="cookie-modal-title"
-                className="font-semibold text-white text-base"
-              >
-                Informativa Cookie & Privacy
-              </h3>
-              <button
-                type="button"
-                onClick={() => setCookieModalOpen(false)}
-                className="text-white/60 hover:text-white p-1 rounded-full"
-                aria-label="Chiudi finestra modale"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <div className="text-xs text-white/75 space-y-3 leading-relaxed">
-              <p>
-                Questo sito utilizza esclusivamente cookie tecnici necessari al
-                corretto funzionamento e alla navigazione delle sezioni.
-              </p>
-              <p>
-                Nessun dato di tracciamento o cookie di profilazione di terze
-                parti viene installato. I dati inseriti nel modulo di contatto
-                sono inoltrati per esclusiva finalità di risposta alle richieste
-                informative sul workshop LO/OP a vale.palazzo@gmail.com.
-              </p>
-              <p className="font-mono text-[11px] text-white/50">
-                Valentina Palazzo - P.IVA: 13006440013 · Gabriele Papparella -
-                P.IVA: 02982530301
-              </p>
-            </div>
-
-            <div className="pt-2 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setCookieModalOpen(false)}
-                className="px-6 py-2 rounded-full bg-white text-black text-xs font-medium hover:bg-white/80 transition-colors font-mono"
-              >
-                Chiudi
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
