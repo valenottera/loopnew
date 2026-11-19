@@ -5,6 +5,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import {
+  ArrowUpRight,
+  Calendar,
   Check,
   FileDown,
   Instagram,
@@ -41,6 +43,48 @@ const pathSlashTitle = 'M 256 12 L 244 100';
 
 const valImg = '/assets/Valentina-BIrzog3g.webp';
 const gabImg = '/assets/Gabriele-dC9VqZ5B.PNG';
+
+const UPCOMING_LOOPS = [
+  {
+    date: '1 Dicembre',
+    format: 'Online su YouTube',
+    title: 'Webinar gratuito online su YouTube',
+    href: 'https://luma.com/i9b5nz0f',
+  },
+  {
+    date: '13 Dicembre',
+    format: 'In presenza',
+    title: 'Workshop full day in presenza',
+    href: 'https://luma.com/n6qe0n99',
+  },
+];
+
+const INSTAGRAM_POSTS = [
+  {
+    url: 'https://www.instagram.com/imvalentinapalazzo/p/DbdM0R8Dg4O/',
+    embedUrl: 'https://www.instagram.com/p/DbdM0R8Dg4O/embed/',
+    author: '@imvalentinapalazzo',
+    type: 'Post',
+  },
+  {
+    url: 'https://www.instagram.com/gabripapparella/reel/DfmubtqNExU/',
+    embedUrl: 'https://www.instagram.com/reel/DfmubtqNExU/embed/',
+    author: '@gabripapparella',
+    type: 'Reel',
+  },
+  {
+    url: 'https://www.instagram.com/imvalentinapalazzo/reel/DfaQhWnOwRT/',
+    embedUrl: 'https://www.instagram.com/reel/DfaQhWnOwRT/embed/',
+    author: '@imvalentinapalazzo',
+    type: 'Reel',
+  },
+  {
+    url: 'https://www.instagram.com/p/Dbuv5kYDnpo/?img_index=1',
+    embedUrl: 'https://www.instagram.com/p/Dbuv5kYDnpo/embed/',
+    author: 'Instagram',
+    type: 'Post',
+  },
+];
 
 function BreathingSection() {
   const [isRunning, setIsRunning] = useState(true);
@@ -103,10 +147,13 @@ function BreathingSection() {
           <p className="text-base sm:text-lg text-white/80 font-normal">
             4 secondi inspiro · 6 secondi espiro
           </p>
-          <p className="text-xs sm:text-sm text-white/50 mt-2 max-w-xl mx-auto leading-relaxed">
-            Sincronizza il tuo respiro con la sfera in stile LO/OP.
-            L'espirazione prolungata attiva il nervo vago e invia al cervello il
-            segnale biologico per uscire dal pilota automatico.
+          <p className="text-base sm:text-lg text-white mt-4 max-w-2xl mx-auto leading-relaxed font-normal">
+            Sincronizza il tuo respiro con la sfera. L'espirazione prolungata
+            attiva il nervo vago, invia al cervello il segnale biologico per
+            uscire dal pilota automatico e fa{' '}
+            <strong className="font-bold text-white">altre due cose</strong>{' '}
+            molto importanti. Vuoi scoprirle? Ne parliamo nei nostri{' '}
+            <strong className="font-bold text-white">webinar gratuiti</strong>
           </p>
         </div>
 
@@ -421,7 +468,7 @@ export default function App() {
 
           <nav
             aria-label="Navigazione principale"
-            className="hidden md:flex items-center gap-8 text-xs tracking-wide text-white/70"
+            className="hidden md:flex items-center gap-6 lg:gap-8 text-xs tracking-wide text-white/70"
           >
             <a
               href="#cose"
@@ -440,6 +487,12 @@ export default function App() {
               className="hover:text-white transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
             >
               Provalo
+            </a>
+            <a
+              href="#prossimi-loop"
+              className="hover:text-white transition-colors whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-1"
+            >
+              Prossimi loop
             </a>
             <a
               href="#chi-siamo"
@@ -507,6 +560,13 @@ export default function App() {
               className="text-white/80 hover:text-white py-1"
             >
               Provalo
+            </a>
+            <a
+              href="#prossimi-loop"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-white/80 hover:text-white py-1"
+            >
+              Prossimi loop
             </a>
             <a
               href="#chi-siamo"
@@ -689,7 +749,7 @@ export default function App() {
             anni buoni alla tua vita.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 w-full max-w-md">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-4 w-full max-w-xl">
             <a
               href="#brochure"
               className="px-8 py-3.5 bg-white text-black font-medium text-sm tracking-wide rounded-full border-2 border-white hover:bg-transparent hover:text-white transition-all duration-200 text-center whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white"
@@ -697,10 +757,10 @@ export default function App() {
               Scarica la brochure
             </a>
             <a
-              href="#contatti"
+              href="#prossimi-loop"
               className="px-8 py-3.5 bg-transparent text-white font-medium text-sm tracking-wide rounded-full border border-white/35 hover:border-white hover:bg-white/5 transition-all duration-200 text-center whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white"
             >
-              Scrivici
+              Scopri i prossimi appuntamenti
             </a>
           </div>
         </div>
@@ -716,12 +776,12 @@ export default function App() {
         <div className="max-w-4xl mx-auto">
           <div className="max-w-3xl">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white mb-6 font-title text-balance leading-tight">
-              Questo automatismo non ti porta verso ciò che vuoi.
+              Sai già cosa fare per tenerti in salute. Ma non riesci ad essere
+              costante.
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-white/80 leading-relaxed font-normal">
-              Riprendi i comandi: usa il respiro per vivere più a lungo, per
-              avere il controllo del presente e costruisci routine che ti
-              aiutino a raggiungere i tuoi obiettivi.
+              Noi ti diamo gli strumenti per riprendere il controllo delle tue
+              routine.
             </p>
           </div>
         </div>
@@ -885,9 +945,17 @@ export default function App() {
       <section id="perche" className="py-20 md:py-28 px-5 sm:px-8">
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white mb-4">
               Perché abitudini e respiro
             </h2>
+            <p className="text-base sm:text-lg text-white/80 leading-relaxed font-normal max-w-3xl">
+              Respirare è l'azione automatica più frequente che facciamo ogni
+              giorno, e lo facciamo tutti (si spera). Usiamo il respiro come
+              base per capire il funzionamento del nostro pilota automatico e
+              applicare metodi di behaviour change che possano scalare su altri
+              comportamenti da modificare: camminare di più, mangiare più sano,
+              dormire meglio.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -950,8 +1018,68 @@ export default function App() {
         </div>
       </section>
 
+      {/* I prossimi loop Section */}
+      <section
+        id="prossimi-loop"
+        className="scroll-mt-16 py-20 md:py-28 px-5 sm:px-8"
+      >
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white mb-3">
+              I prossimi loop
+            </h2>
+            <p className="text-base sm:text-lg text-white/70 font-normal max-w-2xl">
+              Scegli il prossimo appuntamento dal vivo o online e riserva il tuo
+              posto.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {UPCOMING_LOOPS.map((event) => (
+              <div
+                key={event.href}
+                className="relative group overflow-hidden bg-[#090c10]/75 border border-white/10 hover:border-white/25 rounded-2xl p-7 sm:p-8 flex flex-col justify-between transition-all duration-300"
+              >
+                <div className="absolute top-0 left-0 right-0 h-[1.5px] card-specular-edge" />
+                <div>
+                  <div className="flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-white/60 mb-4">
+                    <Calendar className="w-3.5 h-3.5 text-white/70 shrink-0" />
+                    <span className="tabular-nums">{event.date}</span>
+                    <span aria-hidden="true">·</span>
+                    <span>{event.format}</span>
+                  </div>
+                  <h3 className="text-xl sm:text-2xl font-semibold text-white mb-6 leading-snug text-balance">
+                    {event.title}
+                  </h3>
+                </div>
+
+                <div>
+                  <a
+                    href={event.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black font-medium text-sm tracking-wide border-2 border-white hover:bg-transparent hover:text-white transition-all duration-200 whitespace-nowrap focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white"
+                  >
+                    <span>Registrati qui</span>
+                    <ArrowUpRight className="w-4 h-4" />
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Animated divider */}
+      <div className="relative w-full h-[1px] bg-white/10 overflow-hidden">
+        <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/35 to-transparent line-sheen-sweep" />
+      </div>
+
       {/* Chi siamo Section */}
-      <section id="chi-siamo" className="py-20 md:py-28 px-5 sm:px-8">
+      <section
+        id="chi-siamo"
+        className="scroll-mt-16 py-20 md:py-28 px-5 sm:px-8"
+      >
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white">
@@ -1005,6 +1133,68 @@ export default function App() {
                 Performance & Longevità
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Animated divider */}
+      <div className="relative w-full h-[1px] bg-white/10 overflow-hidden">
+        <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/35 to-transparent line-sheen-sweep" />
+      </div>
+
+      {/* Instagram Video & Posts Section */}
+      <section
+        id="instagram"
+        className="scroll-mt-16 py-20 md:py-28 px-5 sm:px-8"
+      >
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-white mb-3">
+              Video e post da Instagram
+            </h2>
+            <p className="text-base sm:text-lg text-white/70 font-normal max-w-2xl">
+              Pillole pratiche, esercizi di respirazione e spunti di behaviour
+              change direttamente dai nostri profili.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {INSTAGRAM_POSTS.map((item) => (
+              <div
+                key={item.url}
+                className="relative group overflow-hidden bg-[#080b0f]/80 border border-white/10 hover:border-white/25 rounded-2xl p-4 sm:p-5 flex flex-col transition-all duration-300"
+              >
+                <div className="absolute top-0 left-0 right-0 h-[1.5px] card-specular-edge" />
+                <div className="flex items-center justify-between gap-4 mb-4 px-1">
+                  <div className="flex items-center gap-2 text-xs font-mono text-white/70 min-w-0">
+                    <Instagram className="w-3.5 h-3.5 text-white/70 shrink-0" />
+                    <span className="truncate">{item.author}</span>
+                    <span aria-hidden="true">·</span>
+                    <span className="shrink-0">{item.type}</span>
+                  </div>
+                  <a
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 text-xs text-white/60 hover:text-white transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-0.5"
+                  >
+                    <span>Apri</span>
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+
+                <div className="w-full overflow-hidden rounded-xl border border-white/15 bg-white">
+                  <iframe
+                    src={item.embedUrl}
+                    title={`${item.author} - ${item.type} Instagram`}
+                    className="w-full h-[500px] sm:h-[540px] border-0 block"
+                    loading="lazy"
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    allowFullScreen
+                  />
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
