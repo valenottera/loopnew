@@ -55,7 +55,7 @@ const UPCOMING_LOOPS = [
     date: '13 Dicembre',
     format: 'In presenza',
     title: 'Workshop full day in presenza',
-    href: 'https://luma.com/n6qe0n99',
+    href: 'https://luma.com/8zesa7cn',
   },
 ];
 
