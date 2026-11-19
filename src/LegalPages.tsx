@@ -128,17 +128,25 @@ function TermsContent() {
         </h2>
         <p>
           L'utente può utilizzare il modulo per richiedere informazioni sulle
-          attività di LO/OP, inserendo nome, cognome, indirizzo email e un
-          messaggio.
+          attività di LO/OP, inserendo nome e cognome, indirizzo email e un
+          messaggio opzionale. Il modulo prepara l'invio diretto tramite il
+          client di posta elettronica dell'utente verso{' '}
+          <a
+            href="mailto:vale.palazzo@gmail.com"
+            className="text-white underline underline-offset-4 hover:text-white/80 font-mono text-xs sm:text-sm"
+          >
+            vale.palazzo@gmail.com
+          </a>
+          .
         </p>
         <p>
-          L'invio del modulo non comporta alcun obbligo di acquisto, iscrizione o
-          partecipazione a eventi e non costituisce una prenotazione.
+          L'invio della richiesta non comporta alcun obbligo di acquisto,
+          iscrizione o partecipazione a eventi e non costituisce una
+          prenotazione.
         </p>
         <p>
-          L'invio della richiesta autorizza i responsabili del progetto a
-          utilizzare i dati forniti esclusivamente per rispondere alla richiesta
-          e ricontattare l'utente in relazione alla stessa.
+          I dati forniti vengono utilizzati esclusivamente per rispondere alla
+          richiesta e ricontattare l'utente in relazione alla stessa.
         </p>
       </section>
 
@@ -287,11 +295,18 @@ function PrivacyContent() {
           , è:
         </p>
         <div className="bg-[#0a0d12] border border-white/10 rounded-xl p-4 sm:p-5 space-y-1.5 text-sm">
-          <p className="font-semibold text-white">
-            [NOME E COGNOME / DENOMINAZIONE DEL TITOLARE]
+          <p className="font-semibold text-white">Valentina Palazzo</p>
+          <p>P. IVA: 13006440013</p>
+          <p>Indirizzo: Corso Regina Margherita 161, Torino (TO)</p>
+          <p>
+            Email:{' '}
+            <a
+              href="mailto:vale.palazzo@gmail.com"
+              className="text-white underline underline-offset-4 hover:text-white/80 font-mono text-xs sm:text-sm"
+            >
+              vale.palazzo@gmail.com
+            </a>
           </p>
-          <p>Indirizzo: [INDIRIZZO COMPLETO]</p>
-          <p>Email: [EMAIL DI CONTATTO]</p>
         </div>
         <p>
           Per qualsiasi richiesta relativa al trattamento dei dati personali è
@@ -301,21 +316,25 @@ function PrivacyContent() {
 
       <section className="space-y-3">
         <h2 className="text-lg sm:text-xl font-semibold text-white">
-          2. Dati personali raccolti
+          2. Dati personali raccolti e modalità di invio
         </h2>
         <p>
           Attraverso il modulo di contatto presente sul sito vengono raccolti
           esclusivamente i seguenti dati personali:
         </p>
         <ul className="list-disc pl-5 space-y-1.5 text-white/80">
-          <li>Nome;</li>
-          <li>Cognome;</li>
+          <li>Nome e cognome;</li>
           <li>Indirizzo email;</li>
           <li>Contenuto del messaggio inviato volontariamente dall'utente.</li>
         </ul>
         <p>
-          Non vengono richiesti dati personali ulteriori né dati relativi alla
-          salute.
+          Il sito non memorizza tali dati su un proprio database né li trasmette
+          a servizi terzi di raccolta moduli: il modulo precompila l'email
+          direttamente nel client di posta dell'utente verso{' '}
+          <span className="font-mono text-xs sm:text-sm text-white">
+            vale.palazzo@gmail.com
+          </span>
+          . Non vengono richiesti dati ulteriori né dati relativi alla salute.
         </p>
       </section>
 
@@ -323,12 +342,10 @@ function PrivacyContent() {
         <h2 className="text-lg sm:text-xl font-semibold text-white">
           3. Finalità e base giuridica del trattamento
         </h2>
-        <p>I dati personali vengono trattati esclusivamente per:</p>
-        <ul className="list-disc pl-5 space-y-1.5 text-white/80">
-          <li>Ricevere e gestire le richieste di informazioni inviate dall'utente;</li>
-          <li>Rispondere alle richieste ricevute;</li>
-          <li>Ricontattare l'utente in relazione alla richiesta presentata.</li>
-        </ul>
+        <p>
+          I dati personali ricevuti via email vengono trattati esclusivamente
+          per rispondere alle richieste ricevute tramite il sito.
+        </p>
         <p>
           La base giuridica del trattamento è costituita dall'esecuzione di
           misure precontrattuali adottate su richiesta dell'interessato, ai
@@ -347,12 +364,8 @@ function PrivacyContent() {
         <p>
           I dati personali sono trattati con strumenti informatici e telematici,
           secondo principi di liceità, correttezza, trasparenza e
-          minimizzazione.
-        </p>
-        <p>
-          Sono adottate misure tecniche e organizzative adeguate a proteggere i
-          dati da accessi non autorizzati, perdita, divulgazione o utilizzo
-          improprio.
+          minimizzazione, adottando misure adeguate a proteggerli da accessi
+          non autorizzati, perdita o divulgazione.
         </p>
       </section>
 
@@ -361,13 +374,10 @@ function PrivacyContent() {
           5. Conservazione dei dati
         </h2>
         <p>
-          I dati vengono conservati per il tempo strettamente necessario a
-          gestire la richiesta e fornire una risposta.
-        </p>
-        <p>
-          Successivamente, vengono cancellati o resi anonimi, salvo che la loro
-          conservazione sia necessaria per adempiere a obblighi di legge o
-          tutelare i diritti del titolare.
+          Le richieste ricevute e i relativi dati di contatto vengono conservati
+          per un periodo massimo di <strong>12 mesi</strong> dalla ricezione,
+          salvo che un'ulteriore conservazione sia necessaria per adempiere a
+          obblighi di legge o tutelare i diritti del titolare.
         </p>
       </section>
 
@@ -377,53 +387,28 @@ function PrivacyContent() {
         </h2>
         <p>I dati personali non vengono venduti né diffusi.</p>
         <p>
-          Possono essere trattati da soggetti esterni che forniscono servizi
-          tecnici necessari al funzionamento del sito, alla gestione del modulo
-          di contatto e alla trasmissione delle comunicazioni, eventualmente
-          nominati responsabili del trattamento ai sensi dell'art. 28 GDPR.
-        </p>
-        <p>
-          I dati possono inoltre essere comunicati alle autorità competenti nei
-          casi previsti dalla legge.
+          I messaggi inviati tramite il client di posta vengono gestiti tramite
+          il fornitore di posta elettronica utilizzato dal titolare per
+          ricevere e rispondere alle email e possono essere comunicati alle
+          autorità competenti nei soli casi previsti dalla legge.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg sm:text-xl font-semibold text-white">
-          7. Trasferimento dei dati fuori dallo Spazio Economico Europeo
-        </h2>
-        <p>
-          Qualora i fornitori dei servizi utilizzati comportino un trasferimento
-          di dati personali verso Paesi situati al di fuori dello Spazio
-          Economico Europeo, tale trasferimento avverrà nel rispetto delle
-          condizioni previste dagli artt. 44 e seguenti del GDPR.
-        </p>
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="text-lg sm:text-xl font-semibold text-white">
-          8. Diritti dell'interessato
+          7. Diritti dell'interessato
         </h2>
         <p>
           L'utente può esercitare in qualsiasi momento i diritti previsti dagli
-          artt. 15-22 del GDPR, tra cui:
-        </p>
-        <ul className="list-disc pl-5 space-y-1.5 text-white/80">
-          <li>
-            Ottenere conferma dell'esistenza di dati personali che lo
-            riguardano;
-          </li>
-          <li>Accedere ai propri dati e richiederne una copia;</li>
-          <li>Chiederne la rettifica o la cancellazione;</li>
-          <li>Richiedere la limitazione del trattamento;</li>
-          <li>Opporsi al trattamento, ove applicabile;</li>
-          <li>
-            Richiedere la portabilità dei dati, nei casi previsti dalla legge.
-          </li>
-        </ul>
-        <p>
-          Le richieste possono essere inviate all'indirizzo email del titolare
-          del trattamento.
+          artt. 15-22 del GDPR (accesso, rettifica, cancellazione, limitazione,
+          opposizione e portabilità nei casi applicabili), scrivendo a{' '}
+          <a
+            href="mailto:vale.palazzo@gmail.com"
+            className="text-white underline underline-offset-4 hover:text-white/80 font-mono text-xs sm:text-sm"
+          >
+            vale.palazzo@gmail.com
+          </a>
+          .
         </p>
         <p>
           L'interessato ha inoltre diritto di proporre reclamo al Garante per la
@@ -442,21 +427,18 @@ function PrivacyContent() {
 
       <section className="space-y-3">
         <h2 className="text-lg sm:text-xl font-semibold text-white">
-          9. Natura del conferimento dei dati
+          8. Natura del conferimento dei dati
         </h2>
         <p>
-          Il conferimento dei dati richiesti dal modulo è facoltativo, ma
-          necessario per poter gestire la richiesta e ricontattare l'utente.
-        </p>
-        <p>
-          Il mancato conferimento dei dati comporta l'impossibilità di dare
-          seguito alla richiesta.
+          Il conferimento dei dati richiesti è facoltativo, ma necessario per
+          poter gestire la richiesta e rispondere all'utente. Il mancato
+          conferimento comporta l'impossibilità di dare seguito alla richiesta.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg sm:text-xl font-semibold text-white">
-          10. Modifiche all'informativa
+          9. Modifiche all'informativa
         </h2>
         <p>
           La presente informativa può essere aggiornata in caso di modifiche al
@@ -487,38 +469,38 @@ function CookieContent() {
         </h2>
         <p>
           I cookie sono piccoli file di testo che i siti web possono memorizzare
-          sul dispositivo dell'utente durante la navigazione. Vengono utilizzati
-          per garantire il corretto funzionamento del sito, ricordare alcune
-          preferenze o raccogliere informazioni sulla navigazione.
+          sul dispositivo dell'utente durante la navigazione per garantire il
+          corretto funzionamento del sito o raccogliere informazioni sull'uso.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg sm:text-xl font-semibold text-white">
-          2. Cookie utilizzati dal sito
+          2. Cookie e tracciamenti sul sito LO/OP
         </h2>
         <p>
-          Il sito LO/OP utilizza esclusivamente cookie tecnici, ove necessari,
-          per consentire la corretta navigazione e il funzionamento delle sue
-          funzionalità.
+          Il sito LO/OP non installa cookie di profilazione, analisi
+          statistica, marketing o tracciamento commerciale, né integra script o
+          embed di terze parti che installano cookie durante la navigazione. I
+          caratteri tipografici sono ospitati localmente sullo stesso dominio.
         </p>
         <p>
-          Questi cookie non vengono utilizzati per finalità pubblicitarie, di
-          profilazione o di monitoraggio commerciale dell'utente.
+          Possono essere utilizzati esclusivamente cookie o risorse tecniche
+          strettamente necessarie alla navigazione e all'erogazione tecnica del
+          sito; per tale motivo non è richiesto un banner di consenso.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg sm:text-xl font-semibold text-white">
-          3. Cookie di terze parti
+          3. Collegamenti a siti esterni
         </h2>
         <p>
-          Eventuali servizi esterni integrati nel sito potrebbero utilizzare
-          tecnologie proprie di memorizzazione o tracciamento.
-        </p>
-        <p>
-          L'utilizzo di tali servizi sarà soggetto alle rispettive informative e,
-          ove richiesto dalla normativa, al preventivo consenso dell'utente.
+          Il sito contiene link diretti verso piattaforme esterne (ad esempio
+          Luma per l'iscrizione agli eventi e Instagram per i contenuti social).
+          Cliccando su tali collegamenti l'utente esce dal sito LO/OP e si
+          applicano esclusivamente le informative privacy e cookie delle
+          rispettive piattaforme.
         </p>
       </section>
 

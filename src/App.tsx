@@ -8,10 +8,10 @@ import {
   ArrowUpRight,
   Calendar,
   Check,
+  Copy,
   FileDown,
   Instagram,
   Linkedin,
-  LoaderCircle,
   Menu,
   Pause,
   Play,
@@ -63,27 +63,27 @@ const UPCOMING_LOOPS = [
 const INSTAGRAM_POSTS = [
   {
     url: 'https://www.instagram.com/imvalentinapalazzo/p/DbdM0R8Dg4O/',
-    embedUrl: 'https://www.instagram.com/p/DbdM0R8Dg4O/embed/',
     author: '@imvalentinapalazzo',
     type: 'Post',
+    label: 'Abitudini, automatismi e cambio di comportamento',
   },
   {
     url: 'https://www.instagram.com/gabripapparella/reel/DfmubtqNExU/',
-    embedUrl: 'https://www.instagram.com/reel/DfmubtqNExU/embed/',
     author: '@gabripapparella',
     type: 'Reel',
+    label: 'Respirazione funzionale e controllo del sistema nervoso',
   },
   {
     url: 'https://www.instagram.com/imvalentinapalazzo/reel/DfaQhWnOwRT/',
-    embedUrl: 'https://www.instagram.com/reel/DfaQhWnOwRT/embed/',
     author: '@imvalentinapalazzo',
     type: 'Reel',
+    label: 'Come progettare routine quotidiane sostenibili',
   },
   {
     url: 'https://www.instagram.com/p/Dbuv5kYDnpo/?img_index=1',
-    embedUrl: 'https://www.instagram.com/p/Dbuv5kYDnpo/embed/',
     author: 'Instagram',
     type: 'Post',
+    label: 'Approfondimento su behaviour change e respiro',
   },
 ];
 
@@ -341,15 +341,13 @@ export default function App() {
     nome: '',
     email: '',
     messaggio: '',
-    privacy: false,
   });
   const [errors, setErrors] = useState<{
     nome?: string;
     email?: string;
-    privacy?: string;
   }>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [copiedEmail, setCopiedEmail] = useState(false);
 
   const normalizeRoute = (pathname: string): '/' | LegalRoute => {
     const clean = pathname.replace(/\/+$/, '') || '/';
@@ -447,12 +445,35 @@ export default function App() {
     };
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const buildMailtoUrl = () => {
+    const subject = `Richiesta informazioni LO/OP da ${formData.nome.trim()}`;
+    const body = [
+      `Nome e cognome: ${formData.nome.trim()}`,
+      `Email: ${formData.email.trim()}`,
+      '',
+      formData.messaggio.trim() || '(Nessun messaggio aggiuntivo)',
+    ].join('\n');
+    return `mailto:vale.palazzo@gmail.com?subject=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+  };
+
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText('vale.palazzo@gmail.com');
+      setCopiedEmail(true);
+      setTimeout(() => setCopiedEmail(false), 2500);
+    } catch {
+      setCopiedEmail(false);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newErrors: { nome?: string; email?: string; privacy?: string } = {};
+    const newErrors: { nome?: string; email?: string } = {};
 
     if (!formData.nome.trim()) {
-      newErrors.nome = 'Inserisci il tuo nome';
+      newErrors.nome = 'Inserisci nome e cognome';
     }
 
     if (!formData.email.trim()) {
@@ -461,49 +482,14 @@ export default function App() {
       newErrors.email = 'Inserisci un indirizzo email valido';
     }
 
-    if (!formData.privacy) {
-      newErrors.privacy = 'È necessario acconsentire al trattamento dei dati';
-    }
-
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-    } else {
-      setErrors({});
-      setIsSubmitting(true);
-      try {
-        const response = await fetch(
-          'https://formsubmit.co/ajax/vale.palazzo@gmail.com',
-          {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json',
-            },
-            body: JSON.stringify({
-              nome: formData.nome,
-              email: formData.email,
-              messaggio: formData.messaggio || '(Nessun messaggio fornito)',
-              _subject: `Iscrizione workshop LO/OP da ${formData.nome}`,
-              _replyto: formData.email,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          window.location.href = `mailto:vale.palazzo@gmail.com?subject=Iscrizione%20Workshop%20LO%2FOP&body=${encodeURIComponent(
-            `Nome: ${formData.nome}\nEmail: ${formData.email}\nMessaggio: ${formData.messaggio}`
-          )}`;
-        }
-        setIsSuccess(true);
-      } catch {
-        window.location.href = `mailto:vale.palazzo@gmail.com?subject=Iscrizione%20Workshop%20LO%2FOP&body=${encodeURIComponent(
-          `Nome: ${formData.nome}\nEmail: ${formData.email}\nMessaggio: ${formData.messaggio}`
-        )}`;
-        setIsSuccess(true);
-      } finally {
-        setIsSubmitting(false);
-      }
+      return;
     }
+
+    setErrors({});
+    window.location.href = buildMailtoUrl();
+    setIsSuccess(true);
   };
 
   return (
@@ -1293,42 +1279,34 @@ export default function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {INSTAGRAM_POSTS.map((item) => (
-              <div
+              <a
                 key={item.url}
-                className="relative group overflow-hidden bg-[#080b0f]/80 border border-white/10 hover:border-white/25 rounded-2xl p-4 sm:p-5 flex flex-col transition-all duration-300"
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="relative group overflow-hidden bg-[#080b0f]/80 border border-white/10 hover:border-white/30 rounded-2xl p-6 sm:p-7 flex flex-col justify-between gap-6 transition-all duration-300 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white"
               >
                 <div className="absolute top-0 left-0 right-0 h-[1.5px] card-specular-edge" />
-                <div className="flex items-center justify-between gap-4 mb-4 px-1">
-                  <div className="flex items-center gap-2 text-xs font-mono text-white/70 min-w-0">
-                    <Instagram className="w-3.5 h-3.5 text-white/70 shrink-0" />
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-2 text-xs font-mono text-white/65 min-w-0">
+                    <Instagram className="w-3.5 h-3.5 text-white/75 shrink-0" />
                     <span className="truncate">{item.author}</span>
                     <span aria-hidden="true">·</span>
                     <span className="shrink-0">{item.type}</span>
                   </div>
-                  <a
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-xs text-white/60 hover:text-white transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white rounded-full px-2 py-0.5"
-                  >
-                    <span>Apri</span>
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </a>
+                  <ArrowUpRight className="w-4 h-4 text-white/50 group-hover:text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0" />
                 </div>
 
-                <div className="w-full overflow-hidden rounded-xl border border-white/15 bg-white">
-                  <iframe
-                    src={item.embedUrl}
-                    title={`${item.author} - ${item.type} Instagram`}
-                    className="w-full h-[500px] sm:h-[540px] border-0 block"
-                    loading="lazy"
-                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                    allowFullScreen
-                  />
-                </div>
-              </div>
+                <p className="text-base font-medium text-white/90 group-hover:text-white leading-relaxed">
+                  {item.label}
+                </p>
+
+                <span className="text-xs font-medium text-white/60 group-hover:text-white transition-colors">
+                  Apri su Instagram
+                </span>
+              </a>
             ))}
           </div>
         </div>
@@ -1378,34 +1356,57 @@ export default function App() {
           </div>
 
           {isSuccess ? (
-            <div className="relative overflow-hidden bg-[#080b0f]/85 border border-white/20 rounded-2xl p-8 sm:p-10 text-center">
+            <div className="relative overflow-hidden bg-[#080b0f]/85 border border-white/20 rounded-2xl p-8 sm:p-10 text-center space-y-5">
               <div className="absolute top-0 left-0 right-0 h-[1.5px] card-specular-edge" />
-              <div className="w-11 h-11 rounded-full border border-white mx-auto flex items-center justify-center mb-4">
+              <div className="w-11 h-11 rounded-full border border-white mx-auto flex items-center justify-center">
                 <Check className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-lg font-semibold text-white mb-2">
-                Richiesta inviata con successo
+              <h3 className="text-lg font-semibold text-white">
+                Email pronta nel tuo client di posta
               </h3>
-              <p className="text-sm text-white/70 max-w-md mx-auto mb-6 leading-relaxed font-normal">
-                Grazie {formData.nome}, il tuo messaggio è stato inoltrato a
-                Valentina Palazzo. Ti risponderemo all'indirizzo {formData.email}{' '}
-                con tutti i dettagli.
+              <p className="text-sm text-white/75 max-w-md mx-auto leading-relaxed font-normal">
+                Grazie {formData.nome}. Completa l'invio dell'email precompilata
+                verso{' '}
+                <span className="font-mono text-white">
+                  vale.palazzo@gmail.com
+                </span>{' '}
+                dal tuo programma di posta.
               </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setIsSuccess(false);
-                  setFormData({
-                    nome: '',
-                    email: '',
-                    messaggio: '',
-                    privacy: false,
-                  });
-                }}
-                className="text-xs text-white/60 hover:text-white underline underline-offset-4"
-              >
-                Invia un'altra richiesta
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+                <a
+                  href={buildMailtoUrl()}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-white/85 transition-colors whitespace-nowrap"
+                >
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Apri client email</span>
+                </a>
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/30 hover:border-white text-xs text-white transition-colors whitespace-nowrap cursor-pointer"
+                >
+                  <Copy className="w-3.5 h-3.5" />
+                  <span>
+                    {copiedEmail ? 'Email copiata' : 'Copia email'}
+                  </span>
+                </button>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsSuccess(false);
+                    setFormData({
+                      nome: '',
+                      email: '',
+                      messaggio: '',
+                    });
+                  }}
+                  className="text-xs text-white/60 hover:text-white underline underline-offset-4 cursor-pointer"
+                >
+                  Compila un nuovo messaggio
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} noValidate className="space-y-6">
@@ -1414,7 +1415,7 @@ export default function App() {
                   htmlFor="contact-nome"
                   className="block text-xs text-white/80 mb-2 uppercase tracking-wider font-medium"
                 >
-                  Nome <span className="text-white/40">*</span>
+                  Nome e cognome <span className="text-white/40">*</span>
                 </label>
                 <input
                   id="contact-nome"
@@ -1475,82 +1476,49 @@ export default function App() {
                 />
               </div>
 
-              <div className="pt-2">
-                <label className="flex items-start gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    checked={formData.privacy}
-                    onChange={(e) => {
-                      setFormData({ ...formData, privacy: e.target.checked });
-                      if (errors.privacy) setErrors({ ...errors, privacy: '' });
-                    }}
-                    className="mt-0.5 h-4 w-4 rounded-md bg-[#0a0d12] border border-white/30 checked:bg-white checked:border-white focus:ring-0 focus:outline-none cursor-pointer"
-                  />
-                  <span className="text-xs text-white/70 leading-relaxed group-hover:text-white/90 transition-colors">
-                    Dichiaro di aver letto la{' '}
-                    <a
-                      href="/privacy-policy"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        navigate('/privacy-policy');
-                      }}
-                      className="underline underline-offset-2 hover:text-white"
-                    >
-                      privacy policy
-                    </a>
-                    , la{' '}
-                    <a
-                      href="/cookie-policy"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        navigate('/cookie-policy');
-                      }}
-                      className="underline underline-offset-2 hover:text-white"
-                    >
-                      cookie policy
-                    </a>{' '}
-                    e i{' '}
-                    <a
-                      href="/termini-e-condizioni"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        navigate('/termini-e-condizioni');
-                      }}
-                      className="underline underline-offset-2 hover:text-white"
-                    >
-                      termini e condizioni
-                    </a>{' '}
-                    e acconsento al trattamento dei dati personali per ricevere
-                    informazioni sulle attività LO/OP.
-                  </span>
-                </label>
-                {errors.privacy && (
-                  <p className="text-xs text-white/80 mt-1.5">
-                    {errors.privacy}
-                  </p>
-                )}
-              </div>
+              <p className="text-xs text-white/70 leading-relaxed pt-1">
+                I dati inseriti verranno usati esclusivamente per rispondere alla
+                tua richiesta, senza marketing o newsletter. Consulta l'
+                <a
+                  href="/privacy-policy"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/privacy-policy');
+                  }}
+                  className="underline underline-offset-2 text-white hover:text-white/80"
+                >
+                  informativa privacy
+                </a>{' '}
+                prima dell'invio.
+              </p>
 
-              <div className="pt-2">
+              <div className="pt-1">
                 <button
                   type="submit"
-                  disabled={isSubmitting}
-                  className="w-full py-3.5 rounded-full bg-white text-black font-semibold text-sm tracking-wide border-2 border-white hover:bg-transparent hover:text-white transition-all duration-200 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white disabled:opacity-50"
+                  className="w-full py-3.5 rounded-full bg-white text-black font-semibold text-sm tracking-wide border-2 border-white hover:bg-transparent hover:text-white transition-all duration-200 flex items-center justify-center gap-2 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-white cursor-pointer"
                 >
-                  {isSubmitting ? (
-                    <>
-                      <LoaderCircle className="w-4 h-4 animate-spin" />
-                      <span>Inoltro in corso...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Send className="w-4 h-4" />
-                      <span>Invia</span>
-                    </>
-                  )}
+                  <Send className="w-4 h-4" />
+                  <span>Invia</span>
+                </button>
+              </div>
+
+              <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 pt-2 text-xs text-white/55">
+                <span>
+                  Oppure scrivi direttamente a{' '}
+                  <a
+                    href="mailto:vale.palazzo@gmail.com"
+                    className="font-mono text-white/80 hover:text-white underline underline-offset-2"
+                  >
+                    vale.palazzo@gmail.com
+                  </a>
+                </span>
+                <button
+                  type="button"
+                  onClick={handleCopyEmail}
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full border border-white/20 hover:border-white/50 text-white/75 hover:text-white transition-colors cursor-pointer"
+                >
+                  <Copy className="w-3 h-3" />
+                  <span>{copiedEmail ? 'Copiata' : 'Copia email'}</span>
                 </button>
               </div>
             </form>
