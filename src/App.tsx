@@ -1009,14 +1009,39 @@ export default function App() {
         <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/35 to-transparent line-sheen-sweep-delayed" />
       </div>
 
-      {/* Contrasting Highlight Ribbon */}
-      <section className="w-full bg-[#d5d9df] text-[#090c10] py-12 sm:py-16 md:py-20 px-5 sm:px-8 relative z-10 shadow-lg border-y border-black/5">
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="font-title text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-[#090c10] text-balance leading-snug">
+      {/* Integrated Highlight Ribbon */}
+      <section className="w-full ribbon-ambient-blue text-white py-14 sm:py-18 md:py-22 px-5 sm:px-8 relative z-10 overflow-hidden">
+        {/* Top border subtle electric edge effect */}
+        <div className="absolute top-0 left-0 right-0 h-[1.5px] card-specular-edge pointer-events-none" />
+
+        {/* Soft central circular blue glow */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 flex items-center justify-center"
+        >
+          <div
+            className="w-[460px] sm:w-[680px] h-[240px] rounded-full blur-3xl opacity-55"
+            style={{
+              background:
+                'radial-gradient(circle at 50% 50%, rgba(140, 190, 238, 0.22) 0%, rgba(56, 98, 152, 0.12) 45%, transparent 75%)',
+            }}
+          />
+        </div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <p className="font-title text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight text-white/95 text-balance leading-snug drop-shadow-[0_2px_18px_rgba(216,236,248,0.18)]">
             I tuoi comportamenti di oggi creano il te di domani
           </p>
         </div>
+
+        {/* Bottom border subtle electric edge effect */}
+        <div className="absolute bottom-0 left-0 right-0 h-[1.5px] card-specular-edge pointer-events-none" />
       </section>
+
+      {/* Animated divider */}
+      <div className="relative w-full h-[1px] bg-white/10 overflow-hidden">
+        <div className="absolute inset-0 w-1/3 bg-gradient-to-r from-transparent via-white/35 to-transparent line-sheen-sweep" />
+      </div>
 
       {/* I prossimi loop Section */}
       <section

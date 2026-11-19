@@ -28,6 +28,11 @@ h6,
     linear-gradient(#090c10 0%, #050608 30%, #040507 70%, #020203 100%);
 }
 
+.ribbon-ambient-blue {
+  background:
+    radial-gradient(60% 110% at 50% 50%, rgba(44, 72, 112, 0.38) 0%, rgba(18, 30, 50, 0.45) 45%, rgba(6, 9, 15, 0.72) 100%);
+}
+
 @keyframes specularLineSweep {
   0% {
     opacity: 0;
